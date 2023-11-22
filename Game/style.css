@@ -1,0 +1,61 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(4, 149, 4);
+    overflow: hidden;
+
+}
+
+.start {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+
+}
+
+@font-face {
+    font-family: 'arcade';
+    src: url(ARCADECLASSIC.TTF);
+}
+
+h1 {
+    font-family: 'arcade';
+    font-size: 40pt;
+    color: rgb(0, 43, 0);
+}
+h3 {
+    font-family: 'arcade';
+    font-size: 15pt;
+    color: rgb(0, 43, 0);
+}
+
+button {
+    width: 300px;
+    padding: 10px;
+    font-family: 'arcade';
+    font-size: 30pt;
+    color: rgb(0, 43, 0);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+footer {
+    position: fixed;
+    padding: 10px;
+    bottom: 0;
+}
+
+button:hover {
+    color: white;
+}
+
+canvas {
+    border: 7px solid darkgreen;
+    border-radius: 3px;
+    background-color: transparent;
+}
