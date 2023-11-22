@@ -7,6 +7,18 @@ body {
 
 }
 
+.panel {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.flex-item {
+    font-family: 'arcade';
+    font-weight: 1rem;
+    font-size: 25pt;
+}
+
 .start {
     position: absolute;
     display: flex;
@@ -30,6 +42,15 @@ h1 {
 h3 {
     font-family: 'arcade';
     font-size: 15pt;
+    color: rgb(0, 43, 0);
+}
+.codernadas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 10px;
+    font-family: 'arcade';
+    font-size: 20pt;
     color: rgb(0, 43, 0);
 }
 
