@@ -1,6 +1,7 @@
 let direction = 'top'
 let speed_player = 5
 let texto_codernadas = document.querySelector('.cordenadas')
+let score = 0
 
 let gameArea = {
     gameover: false,
@@ -16,13 +17,19 @@ let gameArea = {
 
 function gameUpdate() {
     gameArea.clear()
-    movement() // Movimentacao do player
-    player.update()
+    object.update()
     fruit.update()
-    if (player.checkColisionWall()) { player.y = 200; player.x = 200 }
-    EatFood()
-    tail_square.update()
-    document.querySelector('.codernadas').innerHTML = 'CORDENADAS X: ' + player.x + '<br>' + 'CORDENADAS Y: ' + player.y
+    generateNewTail()
+    movement()
+    scoreText.text = "score : " + score;
+    scoreText.update()
+    // Movimentacao do player
+    if (object.checkColisionWall()) {
+        player[0].y = 200;
+        player[0].x = 200;
+        direction = "right"
+    }
+    document.querySelector('.codernadas').innerHTML = 'CORDENADAS X: ' + player[0].x + '<br>' + 'CORDENADAS Y: ' + player[0].y
 
     //if(!gameArea.gameover){
 
@@ -38,30 +45,51 @@ function gameUpdate() {
 function gameover() {
     gameArea.gameover = true
 }
+function scoreUp() {
+    let audio = document.getElementById('myAudio')
+    audio.play()
+}
 
-function EatFood() {
-    if (player.checkColision(fruit.x, fruit.y, fruit.width, fruit.height)) {
-        tail.push({ x: player.x -20, y: player.y })
-        tail_square.update()
-        console.log('teste')
+function generateNewTail() {
+    let head = player[0]
+    if (object.checkColision(fruit.x, fruit.y, fruit.width, fruit.height)) {
+        
+        eatfood()
+        player[player.length] = { x: head.x, y: head.y }
+
     }
+}
+function eatfood() {
+
+    dados = criarComida()
+    fruit.x = dados.x
+    fruit.y = dados.y 
+    score++
 }
 
 function movement() {
+    let x = player[0].x
+    let y = player[0].y
     switch (direction) {
         case 'top':
-            player.y -= speed_player
+            y -= speed_player
             break
         case 'down':
-            player.y += speed_player
+            y += speed_player
             break
         case 'left':
-            player.x -= speed_player
+            x -= speed_player
             break
         case 'right':
-            player.x += speed_player
+            x += speed_player
             break
+
     }
+    let tail = player.pop();
+    tail.x = x;
+    tail.y = y;
+    player.unshift(tail);
+
 }
 
 document.addEventListener('keydown', (event) => {
@@ -118,38 +146,43 @@ function component(x, y, color, width, height) {
         return colidiu
     }
 }
-function drawTail(color, width, height) {
+
+function criarComida() {
+    r_x = Math.floor(Math.random() * gameArea.canvas.width - 10)
+    r_y = Math.floor(Math.random() * gameArea.canvas.height - 10)
+    return { r_x, r_y }
+}
+
+function drawTail(color) {
 
     this.color = color
-    this.width = width
-    this.height = height
     this.update = function () {
         ctx = gameArea.context
         ctx.fillStyle = this.color
-        for (let i = 0; i <= tail; i++) {
-            ctx.fillRect(tail[i].x - 20, tail[i].y, this.width, this.height)
-        }
+        player.forEach(segment => {
+            ctx.fillRect(segment.x, segment.y, 50, 50)
+        });
     }
     this.checkColision = function (x, y, x_width, y_height) {
-        return this.x < x + x_width
-            && this.height + this.x > x
-            && this.y < y + y_height
-            && this.height + this.y > y
+        return player[0].x < x + x_width
+            && 50 + player[0].x > x
+            && player[0].y < y + y_height
+            && 50 + player[0].y > y
 
     }
     this.checkColisionWall = function () {
-        let bottom = gameArea.canvas.width - this.x
+        let bottom = gameArea.canvas.width - player[0].x
         let colidiu = false;
-        if (this.y > gameArea.canvas.height) {
+        if (player[0].y > gameArea.canvas.height) {
             colidiu = true
         }
-        if (this.y < -10) {
+        if (player[0].y < -10) {
             colidiu = true
         }
-        if (this.x < -10) {
+        if (player[0].x < -10) {
             colidiu = true
         }
-        if (this.x > gameArea.canvas.width) {
+        if (player[0].x > gameArea.canvas.width) {
             colidiu = true
         }
 
@@ -157,13 +190,25 @@ function drawTail(color, width, height) {
     }
 }
 
+function setText(text, x, y, color) {
+    this.text = text;
+    this.x = x
+    this.y = y
+    this.color = color
+    this.update = () => {
+        ctx = gameArea.context
+        ctx.font = "25pt arcade"
+        ctx.fillStyle = this.color
+        ctx.fillText(this.text, this.x, this.y)
+    }
+}
 
 function START() {
     document.querySelector('.start').style.display = 'none'
     gameArea.start()
-    player = new component(200, 200, 'darkgreen', 50, 50)
-    tail = [{x : player.x - 20, y : player.y}]
+    player = [{ x: gameArea.canvas.width / 2, y: gameArea.canvas.height / 2 }]
     fruit = new component(300, 300, 'darkgreen', 30, 30)
-    tail_square = new drawTail('red', 50, 50)
+    object = new drawTail("green")
+    scoreText = new setText('score : 0', 10, gameArea.canvas.height - 10, 'green')
     //texto_codernadas.innerText = 'CORDENADAS X: ' +  player.x + 'CORDENADAS Y: ' + player.y
 }

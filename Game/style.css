@@ -29,6 +29,10 @@ body {
 
 }
 
+.start.gameover {
+    display:none;
+}
+
 @font-face {
     font-family: 'arcade';
     src: url(ARCADECLASSIC.TTF);
