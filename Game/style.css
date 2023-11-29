@@ -29,10 +29,6 @@ body {
 
 }
 
-.start.gameover {
-    display:none;
-}
-
 @font-face {
     font-family: 'arcade';
     src: url(ARCADECLASSIC.TTF);
@@ -83,4 +79,5 @@ canvas {
     border: 7px solid darkgreen;
     border-radius: 3px;
     background-color: transparent;
+    padding: 10px;
 }
