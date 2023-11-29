@@ -14,7 +14,7 @@ let gameArea = {
     canvas: document.getElementById('canvas'),
     start: function () {
         this.context = this.canvas.getContext('2d')
-        this.interval = setInterval(gameUpdate, 40) //define um time para executar a function 'gameUpdate'
+        this.interval = setInterval(gameUpdate, 20) //define um time para executar a function 'gameUpdate'
     },
     clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height) // limpa a tela 
